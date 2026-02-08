@@ -1,0 +1,83 @@
+SELECT * FROM Dosen;
+
+SELECT * FROM JadwalKuliah;
+
+SELECT * FROM KRS;
+
+SELECT * FROM Mahasiswa;
+
+SELECT * FROM MataKuliah;
+
+SELECT * FROM Nilai;
+
+SELECT * FROM Ruangan;
+
+-- TAMPILKAN SEMUA DATA DI TABEL
+-- MAHASISWA
+SELECT * FROM Mahasiswa;
+
+-- TAMPILKAN NAMA MAHASISWA DI 
+-- TABEL MAHASISWA
+SELECT NamaMahasiswa FROM Mahasiswa;
+
+SELECT M.NamaMahasiswa, MK.NamaMK 
+FROM Mahasiswa M 
+CROSS JOIN MataKuliah MK
+
+-- MENAMPILKAN SEMUA KOMBINASI DOSEN DAN RUANGAN
+SELECT D.NamaDosen, R.KodeRuangan
+FROM Dosen D
+CROSS JOIN Ruangan R
+
+-- MENAMPILKAN NAMA MAHASISWA YANHG BELUM
+-- MENGAMBIL KRS
+
+INSERT INTO Mahasiswa (NamaMahasiswa, Prodi, Angkatan) VALUES 
+('Alzeta','Teknik Informatika',2025);
+
+
+SELECT M.NamaMahasiswa, K.MataKuliahID 
+FROM Mahasiswa M
+LEFT JOIN KRS K ON M.MahasiswaID = K.MahasiswaID
+
+-- TAMPILKAN SEMUA NAMA MATAKULIAH TERMASUK YANG BELUM PUNYA JADWAL 
+SELECT MK.NamaMK, JK.Hari
+FROM MataKuliah MK
+LEFT JOIN JadwalKuliah JK ON MK.MataKuliahID = JK.MataKuliahID
+
+-- TAMPILKAN SEMUA HARI TERSMASUK YANG TIDAK ADA MATAKULIAHNYA
+SELECT JK.Hari, MK.NamaMK 
+FROM JadwalKuliah JK
+RIGHT JOIN MataKuliah MK ON JK.MataKuliahID = MK.MataKuliahID
+
+SELECT MK.NamaMK, JK.Hari
+FROM MataKuliah MK
+RIGHT JOIN JadwalKuliah JK ON MK.MataKuliahID = JK.MataKuliahID
+
+-- TAMPILKAN SEMUA RUANGAN,APAKAH ADA JADWAL ATAU TIDAK
+SELECT R.KodeRuangan, JK.Hari
+FROM JadwalKuliah JK
+RIGHT JOIN Ruangan R ON R.RuanganID = JK.RuanganID
+
+-- TAMPILKAN NAMA MAHASISWA DAN KRSID DI TABEL KRS
+SELECT MS.NamaMahasiswa, KS.KRSID
+FROM Mahasiswa MS
+INNER JOIN KRS KS ON MS.MahasiswaID = KS.MahasiswaID
+
+-- TAMPILKAN SEMUA NAMA MATAKULIAH DENGAN JADWALNYA
+SELECT MK.NamaMK, JK.Hari
+FROM MataKuliah MK
+INNER JOIN JadwalKuliah JK ON MK.MataKuliahID = JK.MataKuliahID
+
+-- TAMPILKAN MAHASISWA BESERTA NILAI DIA
+SELECT M.NamaMahasiswa, N.NilaiAkhir
+FROM Mahasiswa M
+INNER JOIN Nilai N ON M.MahasiswaID = N.MahasiswaID
+INNER JOIN MataKuliah MK ON MK.MataKuliahID = N.MataKuliahID
+
+-- TAMPILKAN JADWAL MATA KULIAH + DOSEN + RUANGAN
+SELECT JK.Hari, MK.NamaMK, D.NamaDosen, R.KodeRuangan
+FROM JadwalKuliah JK
+INNER JOIN MataKuliah MK ON MK.MataKuliahID = JK.MataKuliahID
+INNER JOIN Dosen D ON JK.DosenID = D.DosenID
+INNER JOIN Ruangan R ON JK.RuanganID = R.RuanganID
